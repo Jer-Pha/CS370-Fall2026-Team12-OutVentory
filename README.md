@@ -22,8 +22,8 @@ _Note: After installing, **close and reopen your terminal** to refresh your path
 
 1.  **Clone the repository:**
     ```bash
-    git clone <repo-url>
-    cd <folder-name>
+    git clone https://github.com/Jer-Pha/out-ventory.git
+    cd out-ventory
     ```
 2.  **Sync the environment:**
     This will download the correct version of Python and all required libraries automatically:
