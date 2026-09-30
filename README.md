@@ -2,6 +2,12 @@
 
 ## Getting Started
 
+### 0. Recommended Software
+
+- IDE/text editor: [Visual Studio Code](https://code.visualstudio.com/download)
+- GitHub GUI: [GitHub Desktop](https://desktop.github.com/download/)
+- Git commit formatting: [Semantic Commit Messages](https://gist.github.com/joshbuchea/6f47e86d2510bce28f8e7f42ae84c716)
+
 ### 1. Install `uv` (project/dependency manager)
 
 - **macOS / Linux:**
@@ -19,6 +25,8 @@ powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | ie
 _Note: After installing, **close and reopen your terminal** to refresh your path._
 
 ### 2. Prepare the Project
+
+_Note: You may need to install [git](https://git-scm.com/install/) before this step. Type `git` in your terminal to check._
 
 1.  **Clone the repository:**
     ```bash
