@@ -6,6 +6,7 @@
 
 - IDE/text editor: [Visual Studio Code](https://code.visualstudio.com/download)
 - GitHub GUI: [GitHub Desktop](https://desktop.github.com/download/)
+- Git commit formatting: [Semantic Commit Messages](https://gist.github.com/joshbuchea/6f47e86d2510bce28f8e7f42ae84c716)
 
 ### 1. Install `uv` (project/dependency manager)
 
