@@ -2,7 +2,7 @@
 
 ## Getting Started
 
-### 0. Recommended Software
+### 0. Recommendations
 
 - IDE/text editor: [Visual Studio Code](https://code.visualstudio.com/download)
 - GitHub GUI: [GitHub Desktop](https://desktop.github.com/download/)
