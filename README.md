@@ -30,7 +30,7 @@ _Note: You may need to install [git](https://git-scm.com/install/) before this s
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/Jer-Pha/CS370-Fall2024-Team12-OutVentory.git
+    git clone https://github.com/Jer-Pha/CS370-Fall2026-Team12-OutVentory.git
     cd out-ventory
     ```
 2.  **Sync the environment:**
