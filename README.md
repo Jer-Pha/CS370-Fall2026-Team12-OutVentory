@@ -2,7 +2,7 @@
 
 ## Getting Started
 
-### 0. Recommended Software
+### 0. Recommendations
 
 - IDE/text editor: [Visual Studio Code](https://code.visualstudio.com/download)
 - GitHub GUI: [GitHub Desktop](https://desktop.github.com/download/)
@@ -30,7 +30,7 @@ _Note: You may need to install [git](https://git-scm.com/install/) before this s
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/Jer-Pha/out-ventory.git
+    git clone https://github.com/Jer-Pha/CS370-Fall2026-Team12-OutVentory.git
     cd out-ventory
     ```
 2.  **Sync the environment:**
