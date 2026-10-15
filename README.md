@@ -1,4 +1,4 @@
-# Out-Ventory
+# OutVentory
 
 ## Getting Started
 
