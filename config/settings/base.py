@@ -19,9 +19,11 @@ DJANGO_APPS = [
 ]
 
 PROJECT_APPS = [
+    "apps.companies",
     "apps.core",
+    "apps.inventory",
+    "apps.logistics",
     "apps.users",
-    "apps.profiles",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS
