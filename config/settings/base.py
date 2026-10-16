@@ -19,7 +19,10 @@ DJANGO_APPS = [
 ]
 
 PROJECT_APPS = [
+    "apps.companies",
     "apps.core",
+    "apps.inventory",
+    "apps.logistics",
     "apps.users",
 ]
 
