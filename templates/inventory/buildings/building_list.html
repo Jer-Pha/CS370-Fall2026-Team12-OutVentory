@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>{{ request.user.profile.company.name }} Buildings</h2>
+
+  <ul>
+    {% for building in buildings %}
+      <li>
+        {{ building.name }}
+        <a href="{% url 'building_update' building.pk %}">Edit</a>
+        <a href="{% url 'building_delete' building.pk %}">Delete</a>
+      </li>
+    {% empty %}
+      <li>No buildings added yet.</li>
+    {% endfor %}
+  </ul>
+
+  <p>
+    <a href="{% url 'building_create' %}">Add New Building</a>
+  </p>
+
+  <!-- Pagination -->
+  {% if is_paginated %}
+    <nav>
+      <div>
+        {% if page_obj.has_previous %}
+          <a href="?page=1">&laquo; First</a>
+          <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        {% endif %}
+
+        <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+
+        {% if page_obj.has_next %}
+          <a href="?page={{ page_obj.next_page_number }}">Next</a>
+          <a href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+        {% endif %}
+      </div>
+    </nav>
+  {% endif %}
+{% endblock %}
