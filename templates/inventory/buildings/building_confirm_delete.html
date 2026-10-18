@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>{{ page_title }}</h2>
+  <p>
+    Are you sure you want to delete <strong>"{{ object.name }}"</strong>?
+  </p>
+  <p style="color: red;">
+    Warning: This action cannot be undone. <br />
+    All locations and inventory levels associated with this building will be deleted forever.
+  </p>
+
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" style="background-color: #dc3545; color: white;">Confirm Delete</button>
+    <a href="{% url 'building_list' %}">Cancel</a>
+  </form>
+{% endblock %}
