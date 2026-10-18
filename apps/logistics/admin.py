@@ -1,2 +1,8 @@
+from django.contrib import admin
 
-# Register your models here.
+from apps.logistics.models import Order, OrderItem, Shipment, ShipmentItem
+
+admin.site.register(Order)
+admin.site.register(OrderItem)
+admin.site.register(Shipment)
+admin.site.register(ShipmentItem)
