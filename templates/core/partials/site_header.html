@@ -1,0 +1,51 @@
+{% if request.path != '/' %}
+  <a href="{% url 'home' %}">Home</a>
+{% endif %}
+
+{% if user.is_authenticated %}
+  <p>
+    {{ user.profile.name }}
+    <br />
+    {{ user.profile.company.name }}
+  </p>
+
+  <p>
+    <a href="{% url 'home' %}" style="text-decoration-line: line-through;">Inventory</a>
+    {% if user.profile.can_pick_order %}
+      <span style="padding: 0 0.5rem">|</span>
+      <a href="{% url 'home' %}" style="text-decoration-line: line-through;">Orders</a>
+    {% endif %}
+    {% if user.profile.can_store_delivery %}
+      <span style="padding: 0 0.5rem">|</span>
+      <a href="{% url 'home' %}" style="text-decoration-line: line-through;">Shipments</a>
+    {% endif %}
+    {% if user.profile.can_create_item or user.profile.can_edit_item or user.profile.can_delete_item %}
+      <span style="padding: 0 0.5rem">|</span>
+      <a href="{% url 'home' %}" style="text-decoration-line: line-through;">Items</a>
+    {% endif %}
+    {% if user.profile.can_create_location or user.profile.can_edit_location or user.profile.can_delete_location %}
+      <span style="padding: 0 0.5rem">|</span>
+      <a href="{% url 'home' %}" style="text-decoration-line: line-through;">Locations</a>
+    {% endif %}
+    {% if user.profile.is_owner %}
+      <span style="padding: 0 0.5rem">|</span>
+      <a href="{% url 'building_list' %}">Buildings</a>
+    {% endif %}
+    {% if user.profile.is_admin %}
+      <span style="padding: 0 0.5rem">|</span>
+      <a href="{% url 'home' %}" style="text-decoration-line: line-through;">Employees</a>
+    {% endif %}
+  </p>
+  <form action="{% url 'logout' %}" method="post">
+    {% csrf_token %}
+    <button type="submit">Log Out</button>
+  </form>
+{% else %}
+  {% if request.path != '/login/' and 'signup' not in request.path %}
+    <p>
+      <a href="{% url 'login' %}">Log In</a>
+      <span style="padding: 0 0.5rem">|</span>
+      <a href="{% url 'signup' %}">Sign Up</a>
+    </p>
+  {% endif %}
+{% endif %}
