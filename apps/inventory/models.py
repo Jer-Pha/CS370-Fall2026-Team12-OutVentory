@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models.functions import Lower
 
@@ -76,13 +77,14 @@ class StorageLocation(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
+        verbose_name = "location"
         ordering = ["name"]
         constraints = [
             models.UniqueConstraint(
                 "building",
                 Lower("name"),
                 name="unique_lower_location_name_in_building",
-                violation_error_message="A location with this name already exists.",
+                violation_error_message="A location with this name already exists in this building.",
             ),
         ]
 
@@ -127,3 +129,18 @@ class InventoryLevel(models.Model):
         return (
             f"{self.item.name} in {self.location.name} (Qty: {self.quantity})"
         )
+
+    def clean(self):
+        super().clean()
+        if (
+            hasattr(self, "item")
+            and hasattr(self, "location")
+            and self.item.company_id != self.location.building.company_id
+        ):
+            raise ValidationError(
+                "The item and storage location must belong to the same company."
+            )
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
