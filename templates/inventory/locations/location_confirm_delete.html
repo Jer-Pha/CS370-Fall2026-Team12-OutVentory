@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>{{ page_title }} &lpar;Building: {{ object.building.name }}&rpar;</h2>
+  <p>
+    Are you sure you want to delete <strong>{{ object.name }}</strong> &lpar;Building: {{ object.building.name }}&rpar;?
+  </p>
+
+  <p style="background-color: lightyellow;">
+    <strong>Warning:</strong> This action cannot be undone. All inventory levels associated with this location will be permanently deleted.
+  </p>
+
+  <h3>Current Inventory Levels</h3>
+  {% if inventory_levels %}
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Quantity</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for level in inventory_levels %}
+          <tr>
+            <td>{{ level.item.name }}</td>
+            <td>{{ level.quantity }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p style="background-color: lightgreen;">This location has no recorded inventory. It is safe to delete.</p>
+  {% endif %}
+
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" style="background-color: red; color: white;">Confirm Delete</button>
+    <a href="{% url 'location_list' %}">Cancel</a>
+  </form>
+{% endblock %}
