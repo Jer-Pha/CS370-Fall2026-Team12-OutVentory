@@ -3,17 +3,28 @@
 {% block content %}
   <h2>{{ request.user.profile.company.name }} Buildings</h2>
 
-  <ul>
-    {% for building in buildings %}
-      <li>
-        {{ building.name }}
-        <a href="{% url 'building_update' building.pk %}">Edit</a>
-        <a href="{% url 'building_delete' building.pk %}">Delete</a>
-      </li>
-    {% empty %}
-      <li>No buildings added yet.</li>
-    {% endfor %}
-  </ul>
+  {% if buildings %}
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for building in buildings %}
+          <tr>
+            <td>{{ building.name }}</td>
+            <td>
+              <a href="{% url 'building_update' building.pk %}">Edit</a>
+            </td>
+            <td>
+              <a href="{% url 'building_delete' building.pk %}">Delete</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endif %}
 
   <p>
     <a href="{% url 'building_create' %}">Add New Building</a>

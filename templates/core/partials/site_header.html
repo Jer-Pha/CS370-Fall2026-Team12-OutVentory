@@ -21,11 +21,11 @@
     {% endif %}
     {% if user.profile.can_create_item or user.profile.can_edit_item or user.profile.can_delete_item %}
       <span style="padding: 0 0.5rem">|</span>
-      <a href="{% url 'home' %}" style="text-decoration-line: line-through;">Items</a>
+      <a href="{% url 'item_list' %}">Items</a>
     {% endif %}
     {% if user.profile.can_create_location or user.profile.can_edit_location or user.profile.can_delete_location %}
       <span style="padding: 0 0.5rem">|</span>
-      <a href="{% url 'home' %}" style="text-decoration-line: line-through;">Locations</a>
+      <a href="{% url 'location_list' %}">Locations</a>
     {% endif %}
     {% if user.profile.is_owner %}
       <span style="padding: 0 0.5rem">|</span>

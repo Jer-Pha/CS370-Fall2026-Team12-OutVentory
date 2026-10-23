@@ -82,18 +82,7 @@ class CompanyAdminRegistrationForm(UserCreationForm):
                 company=company,
                 first_name=first_name,
                 last_name=last_name,
-                is_admin=True,
                 is_owner=True,
-                can_pick_item=True,
-                can_pick_order=True,
-                can_store_item=True,
-                can_store_delivery=True,
-                can_create_item=True,
-                can_edit_item=True,
-                can_delete_item=True,
-                can_create_location=True,
-                can_edit_location=True,
-                can_delete_location=True,
             )
 
         return user

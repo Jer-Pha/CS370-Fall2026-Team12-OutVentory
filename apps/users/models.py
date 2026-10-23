@@ -63,7 +63,23 @@ class EmployeeProfile(models.Model):
 
     @property
     def name_short(self):
-        return f"{self.first_name} {self.last_name[0]}."
+        return f"{self.first_name} {self.last_name[:1]}."
 
     def __str__(self):
         return f"{self.name} ({self.company.name})"
+
+    @classmethod
+    def get_permission_fields(cls):
+        return [f.name for f in cls._meta.fields if f.name.startswith("can_")]
+
+    def save(self, *args, **kwargs):
+        if self.is_owner:
+            self.is_admin = True
+            for field in self.get_permission_fields():
+                setattr(self, field, True)
+
+        elif self.is_admin:
+            for field in self.get_permission_fields():
+                setattr(self, field, True)
+
+        super().save(*args, **kwargs)
