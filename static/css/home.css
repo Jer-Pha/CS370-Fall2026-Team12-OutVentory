@@ -1,0 +1,201 @@
+:root {
+  --navy: #0B162A;
+  --orange: #E64100;
+  --orange-dark: #B93400;
+  --white: #FFFFFF;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+}
+
+/* Base */
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: var(--navy);
+  background: var(--white);
+  line-height: 1.6;
+}
+
+main {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 1.5rem 4rem;
+}
+
+/* Buttons */
+.btn {
+  display: inline-block;
+  padding: 0.8rem 1.8rem;
+  border: 2px solid transparent;
+  border-radius: 999px;
+  font-family: inherit;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.5s, color 0.5s, border-color 0.5s, transform 0.5s;
+}
+.btn:hover { transform: translateY(-2px); }
+
+.btn-primary {
+  background: var(--orange);
+  border-color: var(--orange);
+  color: var(--navy);
+}
+.btn-primary:hover {
+  background: var(--navy);
+  border-color: var(--white);
+  color: var(--white);
+}
+
+.btn-secondary {
+  background: var(--white);
+  border-color: var(--white);
+  color: var(--navy);
+}
+.btn-secondary:hover {
+  background: var(--navy);
+  border-color: var(--white);
+  color: var(--white);
+}
+
+.btn-small {
+  font-size: 0.9rem;
+  padding: 0.45rem 1.1rem;
+}
+
+/* Header */
+.site-header {
+  background: var(--white);
+  border-top: 6px solid var(--navy);
+  border-bottom: 1px solid var(--border);
+}
+.site-nav {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0.9rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+.nav-left, .nav-right {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+.nav-brand {
+  font-weight: 800;
+  font-size: 1.3rem;
+  color: var(--orange);
+  text-decoration: none;
+  margin-right: 0.5rem;
+}
+.nav-link {
+  color: var(--navy);
+  text-decoration: none;
+  font-weight: 600;
+  padding-bottom: 2px;
+  border-bottom: 2px solid transparent;
+}
+a.nav-link:hover {
+  color: var(--navy);
+  border-bottom-color: var(--orange);
+}
+.nav-link.disabled {
+  color: #aaaaaa;
+  cursor: not-allowed;
+}
+.nav-user {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.5;
+  font-size: 1rem;
+  text-align: right;
+  color: var(--navy);
+}
+.nav-user strong { 
+  color: var(--navy); 
+}
+.nav-right form { 
+  margin: 0; 
+}
+
+/* Logged-out banner */
+.user {
+  text-align: center;
+  padding: 3.5rem 1.5rem 3rem;
+  margin: 0 -1.5rem;
+  background: var(--navy);
+  color: var(--white);
+}
+.user h1 {
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  line-height: 1.15;
+  margin: 0 0 1rem;
+  color: var(--white);
+}
+.user-sub {
+  max-width: 600px;
+  margin: 0 auto 2rem;
+  font-size: 1rem;
+  color: var(--white);
+}
+.user-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Feature cards */
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 1rem;
+  margin: 2rem 0 3rem;
+}
+.feature {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-top: 4px solid var(--navy);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+.feature h3 { 
+  margin: 0.5rem; 
+}
+.feature p { 
+  margin: 0 0.5rem 0.5rem; 
+  color: var(--muted); 
+}
+a.feature-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  transition: border-top-color 0.3s, box-shadow 0.3s, transform 0.3s;
+}
+a.feature-link:hover {
+  border-top-color: var(--orange);
+  box-shadow: 0 6px 16px rgba(11, 22, 42, 0.12);
+  transform: translateY(-2px);
+}
+.feature.disabled {
+  opacity: 0.5;
+  border-top-color: var(--border);
+}
+
+/* Dashboard when logged in */
+.dashboard-intro { 
+  padding: 3rem 0 0.5rem; 
+}
+.dashboard-intro h1 { 
+  margin: 0 0 0.25rem; 
+}
+.dashboard-intro .user-sub { 
+  margin: 0; 
+  color: var(--muted);
+ }

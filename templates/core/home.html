@@ -1,6 +1,76 @@
 {% extends 'base.html' %}
 
+{% block title %}Home{% endblock %}
+
 {% block content %}
-  <h1>Welcome to OutVentory!</h1>
-  <p>The app is running correctly.</p>
+  {% if user.is_authenticated %}
+
+    <section class="dashboard-intro">
+      <h1>Welcome back, {{ user.profile.name|default:user.username }}</h1>
+      {% if user.profile.company %}
+        <p class="user-sub">{{ user.profile.company.name }}</p>
+      {% endif %}
+    </section>
+    
+      {% if user.profile.is_admin %}
+        <div class="feature disabled">
+          <h3>Employees</h3>
+          <p>Coming soon</p>
+        </div>
+      {% endif %}
+
+      {% if user.profile.can_create_item or user.profile.can_edit_item or user.profile.can_delete_item %}
+        <a class="feature feature-link" href="{% url 'item_list' %}">
+          <h3>Items</h3>
+          <p>Control your inventory</p>
+        </a>
+      {% endif %}
+
+      {% if user.profile.can_create_location or user.profile.can_edit_location or user.profile.can_delete_location %}
+        <a class="feature feature-link" href="{% url 'location_list' %}">
+          <h3>Locations</h3>
+          <p>Create your own Locations</p>
+        </a>
+      {% endif %}
+
+      {% if user.profile.is_owner %}
+        <a class="feature feature-link" href="{% url 'building_list' %}">
+          <h3>Buildings</h3>
+          <p>Create your buildings.</p>
+        </a>
+      {% endif %}
+    </section>
+
+  {% else %}
+
+    <section class="user">
+      <h1>Control your Inventory with Out-Ventory</h1>
+      <p class="user-sub">
+        Keeps your inventory, companies,
+        and locations in ONE place
+      </p>
+      <div class="user-actions">
+        <a class="btn btn-primary" href="{% url 'signup' %}">Sign Up</a>
+        <a class="btn btn-secondary" href="{% url 'login' %}">Log in</a>
+      </div>
+    </section>
+
+    <section class="features">
+      <div class="feature">
+        <h3>Inventory</h3>
+        <p>Track every item and quantity</p>
+      </div>
+
+      <div class="feature">
+        <h3>Companies</h3>
+        <p>Keep everything organized.</p>
+      </div>
+
+      <div class="feature">
+        <h3>Locations</h3>
+        <p>Know where everything is stored.</p>
+      </div>
+    </section>
+
+  {% endif %}
 {% endblock %}
