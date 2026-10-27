@@ -1,51 +1,44 @@
-{% if request.path != '/' %}
-  <a href="{% url 'home' %}">Home</a>
-{% endif %}
+<nav class="site-nav">
+  <div class="nav-left">
+    <a class="nav-brand" href="{% url 'home' %}">OutVentory</a>
 
-{% if user.is_authenticated %}
-  <p>
-    {{ user.profile.name }}
-    <br />
-    {{ user.profile.company.name }}
-  </p>
+    {% if user.is_authenticated %}
+      {% if user.profile.can_create_item or user.profile.can_edit_item or user.profile.can_delete_item %}
+        <a class="nav-link" href="{% url 'item_list' %}">Items</a>
+      {% endif %}
 
-  <p>
-    <a href="{% url 'home' %}" style="text-decoration-line: line-through;">Inventory</a>
-    {% if user.profile.can_pick_order %}
-      <span style="padding: 0 0.5rem">|</span>
-      <a href="{% url 'home' %}" style="text-decoration-line: line-through;">Orders</a>
+      {% if user.profile.can_create_location or user.profile.can_edit_location or user.profile.can_delete_location %}
+        <a class="nav-link" href="{% url 'location_list' %}">Locations</a>
+      {% endif %}
+
+      {% if user.profile.is_owner %}
+        <a class="nav-link" href="{% url 'building_list' %}">Buildings</a>
+      {% endif %}
+
+      {% if user.profile.is_admin %}
+        <span class="nav-link disabled">Employees</span>
+      {% endif %}
     {% endif %}
-    {% if user.profile.can_store_delivery %}
-      <span style="padding: 0 0.5rem">|</span>
-      <a href="{% url 'home' %}" style="text-decoration-line: line-through;">Shipments</a>
+  </div>
+
+  <div class="nav-right">
+    {% if user.is_authenticated %}
+      <div class="nav-user">
+        <strong>{{ user.profile.name|default:user.username }}</strong>
+        {% if user.profile.company %}
+          <span>{{ user.profile.company.name }}</span>
+        {% endif %}
+      </div>
+
+      <form action="{% url 'logout' %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary btn-small">Log Out</button>
+      </form>
+    {% else %}
+      {% if request.path != '/login/' and 'signup' not in request.path %}
+        <a class="nav-link" href="{% url 'login' %}">Log In</a>
+        <a class="btn btn-primary btn-small" href="{% url 'signup' %}">Sign Up</a>
+      {% endif %}
     {% endif %}
-    {% if user.profile.can_create_item or user.profile.can_edit_item or user.profile.can_delete_item %}
-      <span style="padding: 0 0.5rem">|</span>
-      <a href="{% url 'item_list' %}">Items</a>
-    {% endif %}
-    {% if user.profile.can_create_location or user.profile.can_edit_location or user.profile.can_delete_location %}
-      <span style="padding: 0 0.5rem">|</span>
-      <a href="{% url 'location_list' %}">Locations</a>
-    {% endif %}
-    {% if user.profile.is_owner %}
-      <span style="padding: 0 0.5rem">|</span>
-      <a href="{% url 'building_list' %}">Buildings</a>
-    {% endif %}
-    {% if user.profile.is_admin %}
-      <span style="padding: 0 0.5rem">|</span>
-      <a href="{% url 'home' %}" style="text-decoration-line: line-through;">Employees</a>
-    {% endif %}
-  </p>
-  <form action="{% url 'logout' %}" method="post">
-    {% csrf_token %}
-    <button type="submit">Log Out</button>
-  </form>
-{% else %}
-  {% if request.path != '/login/' and 'signup' not in request.path %}
-    <p>
-      <a href="{% url 'login' %}">Log In</a>
-      <span style="padding: 0 0.5rem">|</span>
-      <a href="{% url 'signup' %}">Sign Up</a>
-    </p>
-  {% endif %}
-{% endif %}
+  </div>
+</nav>
