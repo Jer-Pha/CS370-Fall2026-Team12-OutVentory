@@ -1,4 +1,5 @@
 from django import forms
+from django.core.exceptions import ValidationError
 
 from apps.inventory.models import Building, Item, StorageLocation
 
@@ -54,4 +55,60 @@ class StorageLocationForm(forms.ModelForm):
         if company:
             self.fields["building"].queryset = Building.objects.filter(
                 company=company
+            )
+
+
+class InventoryAdjustForm(forms.Form):
+    quantity = forms.IntegerField(
+        min_value=1,
+        label="Quantity",
+        help_text="Enter the number of units to adjust.",
+    )
+
+    def __init__(
+        self, *args, action=None, instance=None, company=None, **kwargs
+    ):
+        super().__init__(*args, **kwargs)
+        self.action = action
+        self.instance = instance
+        self.company = company
+
+    def clean_quantity(self):
+        quantity = self.cleaned_data["quantity"]
+        if (
+            self.action == "pick"
+            and self.instance
+            and quantity > self.instance.quantity
+        ):
+            raise ValidationError(
+                f"Cannot pick {quantity} units. Only {self.instance.quantity} available."
+            )
+        return quantity
+
+
+class StoreNewInventoryForm(forms.Form):
+    """Used for storing inventory from the top-level button (Item + Location + Qty)."""
+
+    location = forms.ModelChoiceField(
+        queryset=StorageLocation.objects.none(),
+        empty_label="Select a Location",
+    )
+    item = forms.ModelChoiceField(
+        queryset=Item.objects.none(),
+        empty_label="Select an Item",
+    )
+    quantity = forms.IntegerField(
+        min_value=1,
+        help_text="Enter quantity to store.",
+    )
+
+    def __init__(self, *args, company=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.company = company
+        if company:
+            self.fields["item"].queryset = Item.objects.filter(company=company)
+            self.fields["location"].queryset = (
+                StorageLocation.objects.select_related("building")
+                .filter(building__company=company)
+                .order_by("building__name", "name")
             )

@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>{{ page_title }}</h2>
+
+  {% if inventory_levels %}
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Building</th>
+          <th>Location</th>
+          <th>Item</th>
+          <th>Quantity</th>
+          <th colspan="2">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for inventory in inventory_levels %}
+          <tr>
+            <td>{{ inventory.location.building.name }}</td>
+            <td>{{ inventory.location.name }}</td>
+            <td>{{ inventory.item.name }}</td>
+            <td>{{ inventory.quantity }}</td>
+            <td>
+              <a href="{% url 'inventory_store' inventory.pk %}">Store</a>
+            </td>
+            <td>
+              <a href="{% url 'inventory_pick' inventory.pk %}">Pick</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>No inventory found.</p>
+  {% endif %}
+
+  <p>
+    <a href="{% url 'inventory_create' %}">Add New Inventory</a>
+  </p>
+
+  <!-- Pagination -->
+  {% if is_paginated %}
+    <nav>
+      <div>
+        {% if page_obj.has_previous %}
+          <a href="?page=1">&laquo; First</a>
+          <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        {% endif %}
+
+        <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+
+        {% if page_obj.has_next %}
+          <a href="?page={{ page_obj.next_page_number }}">Next</a>
+          <a href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+        {% endif %}
+      </div>
+    </nav>
+  {% endif %}
+{% endblock %}
