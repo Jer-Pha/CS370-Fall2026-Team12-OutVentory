@@ -5,6 +5,10 @@ from apps.inventory.views import (
     BuildingDeleteView,
     BuildingListView,
     BuildingUpdateView,
+    InventoryListView,
+    InventoryPickView,
+    InventoryStoreNewView,
+    InventoryStoreView,
     ItemCreateView,
     ItemDeleteView,
     ItemListView,
@@ -15,8 +19,28 @@ from apps.inventory.views import (
     LocationUpdateView,
 )
 
-# Building URLs
+# Inventory URLs
 urlpatterns = [
+    path("inventory/", InventoryListView.as_view(), name="inventory_list"),
+    path(
+        "inventory/add/",
+        InventoryStoreNewView.as_view(),
+        name="inventory_create",
+    ),
+    path(
+        "inventory/<int:pk>/pick/",
+        InventoryPickView.as_view(),
+        name="inventory_pick",
+    ),
+    path(
+        "inventory/<int:pk>/store/",
+        InventoryStoreView.as_view(),
+        name="inventory_store",
+    ),
+]
+
+# Building URLs
+urlpatterns += [
     path("buildings/", BuildingListView.as_view(), name="building_list"),
     path(
         "buildings/add/", BuildingCreateView.as_view(), name="building_create"

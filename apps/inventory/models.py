@@ -30,7 +30,7 @@ class Building(models.Model):
         ]
 
     def __str__(self):
-        return f"{self.name} ({self.company.name})"
+        return self.name
 
 
 class Item(models.Model):
@@ -57,7 +57,7 @@ class Item(models.Model):
         ]
 
     def __str__(self):
-        return f"{self.name} ({self.company.name})"
+        return self.name
 
 
 class StorageLocation(models.Model):

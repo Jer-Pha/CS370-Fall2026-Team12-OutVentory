@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>{{ page_title }}</h2>
+
+  <p>
+    <strong>Building:</strong> {{ object.location.building.name }}<br />
+    <strong>Location:</strong> {{ object.location.name }}<br />
+    <strong>Item:</strong> {{ object.item.name }}<br />
+    <strong>Current Quantity:</strong> {{ object.quantity }}
+  </p>
+
+  <form method="post">
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <button type="submit">
+      {% if action == 'pick' %}
+        Confirm Pick
+      {% elif action == 'store' %}
+        Confirm Store
+      {% else %}
+        Submit
+      {% endif %}
+    </button>
+    <a href="{% url 'inventory_list' %}">Cancel</a>
+  </form>
+{% endblock %}
