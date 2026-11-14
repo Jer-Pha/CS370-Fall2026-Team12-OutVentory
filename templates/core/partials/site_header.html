@@ -10,7 +10,7 @@
   </p>
 
   <p>
-    <a href="{% url 'home' %}" style="text-decoration-line: line-through;">Inventory</a>
+    <a href="{% url 'inventory_list' %}">Inventory</a>
     {% if user.profile.can_pick_order %}
       <span style="padding: 0 0.5rem">|</span>
       <a href="{% url 'home' %}" style="text-decoration-line: line-through;">Orders</a>

@@ -1,9 +1,24 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db import transaction
 from django.db.models import Prefetch
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DeleteView, ListView, UpdateView
+from django.views.generic import (
+    CreateView,
+    DeleteView,
+    FormView,
+    ListView,
+    UpdateView,
+)
 
 from apps.core.mixins import PageTitleMixin
-from apps.inventory.forms import BuildingForm, ItemForm, StorageLocationForm
+from apps.inventory.forms import (
+    BuildingForm,
+    InventoryAdjustForm,
+    ItemForm,
+    StorageLocationForm,
+    StoreNewInventoryForm,
+)
 from apps.inventory.mixins import CompanyMixin, ProfilePermissionMixin
 from apps.inventory.models import (
     Building,
@@ -183,3 +198,123 @@ class LocationDeleteView(LocationBaseView, DeleteView):
         )
 
         return context
+
+
+############################ Inventory Management #############################
+
+
+class InventoryListView(
+    LoginRequiredMixin, CompanyMixin, PageTitleMixin, ListView
+):
+    """Displays existing inventory (quantity > 0) scoped to the user's company."""
+
+    model = InventoryLevel
+    company_lookup = "item__company"
+    context_object_name = "inventory_levels"
+    paginate_by = 20
+    page_title = "View Inventory"
+    template_name = "inventory/manage_inventory/inventory_list.html"
+
+    def get_queryset(self):
+        return (
+            super()
+            .get_queryset()
+            .filter(quantity__gt=0)
+            .select_related("item", "location__building")
+            .order_by(
+                "location__building__name",
+                "location__name",
+                "item__name",
+            )
+        )
+
+
+class InventoryAdjustBaseView(
+    ProfilePermissionMixin, CompanyMixin, PageTitleMixin, UpdateView
+):
+    """Base view for adjusting quantity on an existing InventoryLevel record."""
+
+    model = InventoryLevel
+    permission_required = (
+        "can_pick_item",
+        "can_store_item",
+    )
+    permission_match_any = True
+    form_class = InventoryAdjustForm
+    template_name = "inventory/manage_inventory/inventory_adjust_form.html"
+    success_url = reverse_lazy("inventory_list")
+    company_lookup = "item__company"
+    action = None
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["action"] = self.action
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["action"] = self.action
+        return context
+
+
+class InventoryPickView(InventoryAdjustBaseView):
+    permission_required = "can_pick_item"
+    permission_match_any = False
+    action = "pick"
+
+    def get_page_title(self):
+        return f"Pick Item: {self.object.item.name}"
+
+    @transaction.atomic
+    def form_valid(self, form):
+        picked_qty = form.cleaned_data["quantity"]
+        self.object.quantity -= picked_qty
+        self.object.updated_by = self.request.user
+        self.object.save()
+        return redirect(self.get_success_url())
+
+
+class InventoryStoreView(InventoryAdjustBaseView):
+    permission_required = "can_store_item"
+    permission_match_any = False
+    action = "store"
+
+    def get_page_title(self):
+        return f"Store Item: {self.object.item.name}"
+
+    @transaction.atomic
+    def form_valid(self, form):
+        stored_qty = form.cleaned_data["quantity"]
+        self.object.quantity += stored_qty
+        self.object.updated_by = self.request.user
+        self.object.save()
+        return redirect(self.get_success_url())
+
+
+class InventoryStoreNewView(
+    ProfilePermissionMixin, CompanyMixin, PageTitleMixin, FormView
+):
+    """Stores an item into a selected location (new record or adds to existing)."""
+
+    permission_required = "can_store_item"
+    form_class = StoreNewInventoryForm
+    page_title = "Store Item in Location"
+    template_name = "inventory/manage_inventory/inventory_store_new_form.html"
+    success_url = reverse_lazy("inventory_list")
+
+    @transaction.atomic
+    def form_valid(self, form):
+        item = form.cleaned_data["item"]
+        location = form.cleaned_data["location"]
+        quantity = form.cleaned_data["quantity"]
+
+        inventory_level, _ = InventoryLevel.objects.get_or_create(
+            item=item,
+            location=location,
+            defaults={"quantity": 0},
+        )
+        inventory_level.quantity += quantity
+        inventory_level.updated_by = self.request.user
+        inventory_level.save()
+
+        return super().form_valid(form)
