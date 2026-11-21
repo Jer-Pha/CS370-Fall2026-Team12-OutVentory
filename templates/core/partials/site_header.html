@@ -33,7 +33,7 @@
     {% endif %}
     {% if user.profile.is_admin %}
       <span style="padding: 0 0.5rem">|</span>
-      <a href="{% url 'home' %}" style="text-decoration-line: line-through;">Employees</a>
+      <a href="{% url 'employee_list' %}">Employees</a>
     {% endif %}
   </p>
   <form action="{% url 'logout' %}" method="post">

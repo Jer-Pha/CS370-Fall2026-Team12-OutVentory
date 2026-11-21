@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+  <h2>{{ request.user.profile.company.name }} Employees</h2>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ formset.management_form }}
+
+    {% if formset %}
+      <table border="1">
+        <thead>
+          <tr>
+            <th colspan="2" scope="colgroup">Information</th>
+            <th colspan="10" scope="colgroup">Permissions</th>
+          </tr>
+          <tr>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">Pick Items</th>
+            <th scope="col">Store Items</th>
+            <th scope="col">Pick Orders</th>
+            <th scope="col">Create Items</th>
+            <th scope="col">Edit Items</th>
+            <th scope="col">Delete Items</th>
+            <th scope="col">Create Locations</th>
+            <th scope="col">Edit Locations</th>
+            <th scope="col">Delete Locations</th>
+            <th scope="col">Administrator</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for form in formset %}
+            <tr>
+              <td>{{ form.instance.first_name }}</td>
+              <td>{{ form.instance.last_name }}</td>
+              {{ form.id }}
+              <td>{{ form.can_pick_item }}</td>
+              <td>{{ form.can_store_item }}</td>
+              <td>{{ form.can_pick_order }}</td>
+              <td>{{ form.can_create_item }}</td>
+              <td>{{ form.can_edit_item }}</td>
+              <td>{{ form.can_delete_item }}</td>
+              <td>{{ form.can_create_location }}</td>
+              <td>{{ form.can_edit_location }}</td>
+              <td>{{ form.can_delete_location }}</td>
+              <td>{{ form.is_admin }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <button type="submit">Save Changes</button>
+    {% else %}
+      <p>No employees found.</p>
+    {% endif %}
+  </form>
+{% endblock %}
+
+{% block script %}
+  <script>
+    const request_user_is_owner = {% if request.user.profile.is_owner %}true{% else %}false{% endif %};
+  </script>
+  <script src="{% static 'js/users/employee_list.js' %}"></script>
+{% endblock %}

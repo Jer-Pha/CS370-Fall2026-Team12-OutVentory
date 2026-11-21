@@ -4,6 +4,7 @@ from django.urls import path
 from apps.users.views import (
     CompanyAdminSignUpView,
     EmployeeSignUpView,
+    ManageEmployeePermissionsView,
     SignUpView,
 )
 
@@ -26,5 +27,10 @@ urlpatterns = [
         "signup/owner/",
         CompanyAdminSignUpView.as_view(),
         name="signup_owner",
+    ),
+    path(
+        "employees/",
+        ManageEmployeePermissionsView.as_view(),
+        name="employee_list",
     ),
 ]
