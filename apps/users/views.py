@@ -81,6 +81,7 @@ class ManageEmployeePermissionsView(
         if formset.is_valid():
             formset.save()
             return redirect(request.path)
+            return redirect(reverse_lazy("employee_list"))
 
         # If invalid, re-render the page with errors
         context = self.get_context_data()
