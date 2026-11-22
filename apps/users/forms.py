@@ -86,3 +86,20 @@ class CompanyAdminRegistrationForm(UserCreationForm):
             )
 
         return user
+
+
+class EmployeePermissionForm(forms.ModelForm):
+    class Meta:
+        model = EmployeeProfile
+        fields = [
+            "can_pick_item",
+            "can_store_item",
+            "can_pick_order",
+            "can_create_item",
+            "can_edit_item",
+            "can_delete_item",
+            "can_create_location",
+            "can_edit_location",
+            "can_delete_location",
+            "is_admin",
+        ]

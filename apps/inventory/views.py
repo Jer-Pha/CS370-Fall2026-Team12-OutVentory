@@ -11,6 +11,7 @@ from django.views.generic import (
     UpdateView,
 )
 
+from apps.companies.mixins import CompanyMixin
 from apps.core.mixins import PageTitleMixin
 from apps.inventory.forms import (
     BuildingForm,
@@ -19,13 +20,13 @@ from apps.inventory.forms import (
     StorageLocationForm,
     StoreNewInventoryForm,
 )
-from apps.inventory.mixins import CompanyMixin, ProfilePermissionMixin
 from apps.inventory.models import (
     Building,
     InventoryLevel,
     Item,
     StorageLocation,
 )
+from apps.users.mixins import ProfilePermissionMixin
 
 ############################### Building Views ################################
 
