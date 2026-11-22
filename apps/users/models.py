@@ -49,7 +49,6 @@ class EmployeeProfile(models.Model):
     can_pick_item = models.BooleanField(default=False, null=False)
     can_pick_order = models.BooleanField(default=False, null=False)
     can_store_item = models.BooleanField(default=False, null=False)
-    can_store_delivery = models.BooleanField(default=False, null=False)
     can_create_item = models.BooleanField(default=False, null=False)
     can_edit_item = models.BooleanField(default=False, null=False)
     can_delete_item = models.BooleanField(default=False, null=False)

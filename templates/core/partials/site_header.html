@@ -15,10 +15,6 @@
       <span style="padding: 0 0.5rem">|</span>
       <a href="{% url 'home' %}" style="text-decoration-line: line-through;">Orders</a>
     {% endif %}
-    {% if user.profile.can_store_delivery %}
-      <span style="padding: 0 0.5rem">|</span>
-      <a href="{% url 'home' %}" style="text-decoration-line: line-through;">Shipments</a>
-    {% endif %}
     {% if user.profile.can_create_item or user.profile.can_edit_item or user.profile.can_delete_item %}
       <span style="padding: 0 0.5rem">|</span>
       <a href="{% url 'item_list' %}">Items</a>
