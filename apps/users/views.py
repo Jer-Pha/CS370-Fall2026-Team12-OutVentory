@@ -52,8 +52,8 @@ class ManageEmployeePermissionsView(
         return (
             super()
             .get_queryset()
-            .exclude(is_owner=True)
-            .order_by("-is_admin", "last_name", "first_name")
+            # .exclude(user=self.request.user)
+            .order_by("-is_owner", "-is_admin", "last_name", "first_name")
         )
 
     def get_formset(self, queryset=None, data=None):
@@ -69,6 +69,7 @@ class ManageEmployeePermissionsView(
         return PermissionFormSet(
             data=data,
             queryset=queryset,
+            form_kwargs={"request_user_profile": self.request.user.profile},
         )
 
     def get_context_data(self, **kwargs):
@@ -80,11 +81,8 @@ class ManageEmployeePermissionsView(
         formset = self.get_formset(data=request.POST)
         if formset.is_valid():
             formset.save()
-            return redirect(request.path)
             return redirect(reverse_lazy("employee_list"))
 
-        # If invalid, re-render the page with errors
         context = self.get_context_data()
         context["formset"] = formset
         return self.render_to_response(context)
-
