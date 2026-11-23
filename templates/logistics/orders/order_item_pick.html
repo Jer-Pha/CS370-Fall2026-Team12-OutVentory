@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>{{ page_title }}</h2>
+
+  <p>
+    <strong>Order:</strong> {{ order.order_number }}<br />
+    <strong>Item:</strong> {{ object.item.name }}<br />
+    <strong>Quantity Needed:</strong> {{ object.remaining_qty }}
+  </p>
+
+  <form method="post">
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <button type="submit">Confirm Pick</button>
+    <a href="{% url 'order_item_list' order_pk=order.id %}">Cancel</a>
+  </form>
+{% endblock %}
