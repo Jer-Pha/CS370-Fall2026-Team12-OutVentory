@@ -4,9 +4,11 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ("logistics", "0004_remove_orderitem_order_item_quantity_gte_1_and_more"),
+        (
+            "logistics",
+            "0004_remove_orderitem_order_item_quantity_gte_1_and_more",
+        ),
     ]
 
     operations = [

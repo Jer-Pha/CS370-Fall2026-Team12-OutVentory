@@ -5,7 +5,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("inventory", "0002_alter_storagelocation_options_and_more"),
         ("logistics", "0003_orderitem_picked_quantity"),
