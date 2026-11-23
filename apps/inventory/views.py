@@ -184,7 +184,10 @@ class LocationDeleteView(LocationBaseView, DeleteView):
     template_name = "inventory/locations/location_confirm_delete.html"
 
     def get_page_title(self):
-        return f"Delete Location: {self.object.name}"
+        return (
+            f"Delete Location: {self.object.name} (Building:"
+            f" {self.object.building.name})"
+        )
 
     def get_queryset(self):
         return super().get_queryset().select_related("building")
