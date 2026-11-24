@@ -13,7 +13,7 @@
     <a href="{% url 'inventory_list' %}">Inventory</a>
     {% if user.profile.can_pick_order %}
       <span style="padding: 0 0.5rem">|</span>
-      <a href="{% url 'home' %}" style="text-decoration-line: line-through;">Orders</a>
+      <a href="{% url 'order_list' %}">Orders</a>
     {% endif %}
     {% if user.profile.can_create_item or user.profile.can_edit_item or user.profile.can_delete_item %}
       <span style="padding: 0 0.5rem">|</span>

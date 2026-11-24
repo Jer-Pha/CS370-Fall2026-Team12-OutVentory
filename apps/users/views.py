@@ -45,7 +45,7 @@ class ManageEmployeePermissionsView(
     permission_match_any = True
     model = EmployeeProfile
     context_object_name = "employees"
-    page_title = "Manage Employee Permissions"
+    page_title = "Employees"
     template_name = "users/employee_list.html"
 
     def get_queryset(self):

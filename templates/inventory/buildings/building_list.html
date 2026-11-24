@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h2>{{ request.user.profile.company.name }} Buildings</h2>
+  <h2>{{ page_title }}</h2>
 
   {% if buildings %}
     <table border="1">
