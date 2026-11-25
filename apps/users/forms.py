@@ -86,3 +86,43 @@ class CompanyAdminRegistrationForm(UserCreationForm):
             )
 
         return user
+
+
+class EmployeePermissionForm(forms.ModelForm):
+    class Meta:
+        model = EmployeeProfile
+        fields = [
+            "can_pick_item",
+            "can_store_item",
+            "can_pick_order",
+            "can_create_item",
+            "can_edit_item",
+            "can_delete_item",
+            "can_create_location",
+            "can_edit_location",
+            "can_delete_location",
+            "is_admin",
+        ]
+
+    def __init__(self, *args, **kwargs):
+        self.request_user_profile = kwargs.pop("request_user_profile", None)
+        super().__init__(*args, **kwargs)
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        # Admins can't change admin/owner permissions and no self changes
+        if (
+            self.request_user_profile
+            and not self.request_user_profile.is_owner
+            and self.instance
+            and self.instance.is_admin
+        ) or (
+            self.request_user_profile
+            and self.instance
+            and self.instance == self.request_user_profile
+        ):
+            for field_name in cleaned_data:
+                cleaned_data[field_name] = getattr(self.instance, field_name)
+
+        return cleaned_data

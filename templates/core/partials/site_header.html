@@ -1,23 +1,21 @@
 <nav class="site-nav">
   <div class="nav-left">
     <a class="nav-brand" href="{% url 'home' %}">OutVentory</a>
+    {% if not request.user.is_authenticated and request.path != '/' %}
+      <a class="nav-brand" href="{% url 'home' %}">OutVentory</a>
+    {% elif request.user.is_authenticated and request.path != '/inventory/' %}
+      <a class="nav-brand" href="{% url 'inventory_list' %}">OutVentory</a>
+    {% else %}
+      <a class="nav-brand" href="#">OutVentory</a>
+    {% endif %}
 
     {% if user.is_authenticated %}
-      {% if user.profile.can_create_item or user.profile.can_edit_item or user.profile.can_delete_item %}
-        <a class="nav-link" href="{% url 'item_list' %}">Items</a>
-      {% endif %}
-
-      {% if user.profile.can_create_location or user.profile.can_edit_location or user.profile.can_delete_location %}
-        <a class="nav-link" href="{% url 'location_list' %}">Locations</a>
-      {% endif %}
-
-      {% if user.profile.is_owner %}
-        <a class="nav-link" href="{% url 'building_list' %}">Buildings</a>
-      {% endif %}
-
-      {% if user.profile.is_admin %}
-        <span class="nav-link disabled">Employees</span>
-      {% endif %}
+      {% for tuple in request.user.profile.permission_tuples %}
+        <a class="nav-link" href="{% url tuple.0 %}">{{ tuple.1 }}</a>
+        {% if not forloop.last %}
+          <span style="padding: 0 0.5rem">|</span>
+        {% endif %}
+      {% endfor %}
     {% endif %}
   </div>
 
@@ -41,4 +39,24 @@
       {% endif %}
     {% endif %}
   </div>
-</nav>
+</nav>=======<p>
+  {% for tuple in request.user.profile.permission_tuples %}
+    <a href="{% url tuple.0 %}">{{ tuple.1 }}</a>
+    {% if not forloop.last %}
+      <span style="padding: 0 0.5rem">|</span>
+    {% endif %}
+  {% endfor %}
+</p>
+<form action="{% url 'logout' %}" method="post">
+  {% csrf_token %}
+  <button type="submit">Log Out</button>
+</form>
+{% else %}
+{% if request.path != '/login/' and 'signup' not in request.path %}
+  <p>
+    <a href="{% url 'login' %}">Log In</a>
+    <span style="padding: 0 0.5rem">|</span>
+    <a href="{% url 'signup' %}">Sign Up</a>
+  </p>
+{% endif %}
+{% endif %}>>>>>>> main
