@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // 1. Initial Page Load Setup
   const rows = document.querySelectorAll("tbody tr");
 
-  rows.forEach((row) => {
+  rows.forEach((row, idx) => {
     const isAdminCb = row.querySelector(
       'input[type="checkbox"][name$="is_admin"]',
     );
@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
     if (isAdminCb.checked) {
-      if (!request_user_is_owner) {
+      if (!request_user_is_owner || idx === 0) {
         // Non-owner viewing an admin
         isAdminCb.disabled = true;
       }
