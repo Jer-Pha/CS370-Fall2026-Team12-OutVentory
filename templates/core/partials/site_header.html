@@ -1,5 +1,9 @@
-{% if request.path != '/' %}
+{% if not request.user.is_authenticated and request.path != '/' %}
   <a href="{% url 'home' %}">Home</a>
+{% elif request.user.is_authenticated and request.path != '/inventory/' %}
+  <a href="{% url 'inventory_list' %}">Home</a>
+{% else %}
+  <a href="#">Home</a>
 {% endif %}
 
 {% if user.is_authenticated %}
