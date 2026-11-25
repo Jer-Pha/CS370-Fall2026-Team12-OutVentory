@@ -64,12 +64,40 @@ class EmployeeProfile(models.Model):
     def name_short(self):
         return f"{self.first_name} {self.last_name[:1]}."
 
+    @classmethod
+    def get_permission_tuples(cls):
+        return {
+            ("can_pick_order",): ("order_list", "Orders"),
+            ("can_create_item", "can_edit_item", "can_delete_item"): (
+                "item_list",
+                "Items",
+            ),
+            (
+                "can_create_location",
+                "can_edit_location",
+                "can_delete_location",
+            ): ("location_list", "Locations"),
+            ("is_owner",): ("building_list", "Buildings"),
+            ("is_owner", "is_admin"): ("employee_list", "Employees"),
+        }
+
+    @property
+    def permission_tuples(self):
+        field_tuples = self.get_permission_tuples()
+        response = []
+
+        for field_tuple in field_tuples:
+            if any(getattr(self, f, False) for f in field_tuple):
+                response.append(field_tuples[field_tuple])
+
+        return response
+
     def __str__(self):
         return f"{self.name} ({self.company.name})"
 
     @classmethod
     def get_permission_fields(cls):
-        return [f.name for f in cls._meta.fields if f.name.startswith("can_")]
+        return (f.name for f in cls._meta.fields if f.name.startswith("can_"))
 
     def save(self, *args, **kwargs):
         if self.is_owner:

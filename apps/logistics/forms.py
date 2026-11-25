@@ -12,6 +12,7 @@ class OrderItemPickForm(forms.Form):
     )
     quantity = forms.IntegerField(
         min_value=1,
+        max_value=2147483647,
         label="Quantity",
         help_text="Enter the number of units to pick.",
     )

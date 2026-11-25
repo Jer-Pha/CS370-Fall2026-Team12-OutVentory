@@ -61,6 +61,7 @@ class StorageLocationForm(forms.ModelForm):
 class InventoryAdjustForm(forms.Form):
     quantity = forms.IntegerField(
         min_value=1,
+        max_value=2147483647,
         label="Quantity",
         help_text="Enter the number of units to adjust.",
     )
@@ -99,6 +100,7 @@ class StoreNewInventoryForm(forms.Form):
     )
     quantity = forms.IntegerField(
         min_value=1,
+        max_value=2147483647,
         help_text="Enter quantity to store.",
     )
 
