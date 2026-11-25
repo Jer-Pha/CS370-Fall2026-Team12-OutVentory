@@ -10,27 +10,12 @@
   </p>
 
   <p>
-    <a href="{% url 'inventory_list' %}">Inventory</a>
-    {% if user.profile.can_pick_order %}
-      <span style="padding: 0 0.5rem">|</span>
-      <a href="{% url 'order_list' %}">Orders</a>
-    {% endif %}
-    {% if user.profile.can_create_item or user.profile.can_edit_item or user.profile.can_delete_item %}
-      <span style="padding: 0 0.5rem">|</span>
-      <a href="{% url 'item_list' %}">Items</a>
-    {% endif %}
-    {% if user.profile.can_create_location or user.profile.can_edit_location or user.profile.can_delete_location %}
-      <span style="padding: 0 0.5rem">|</span>
-      <a href="{% url 'location_list' %}">Locations</a>
-    {% endif %}
-    {% if user.profile.is_owner %}
-      <span style="padding: 0 0.5rem">|</span>
-      <a href="{% url 'building_list' %}">Buildings</a>
-    {% endif %}
-    {% if user.profile.is_admin %}
-      <span style="padding: 0 0.5rem">|</span>
-      <a href="{% url 'employee_list' %}">Employees</a>
-    {% endif %}
+    {% for tuple in request.user.profile.permission_tuples %}
+      <a href="{% url tuple.0 %}">{{ tuple.1 }}</a>
+      {% if not forloop.last %}
+        <span style="padding: 0 0.5rem">|</span>
+      {% endif %}
+    {% endfor %}
   </p>
   <form action="{% url 'logout' %}" method="post">
     {% csrf_token %}
